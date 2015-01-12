@@ -1,0 +1,18 @@
+{  
+   "aim":"test",
+   "glosary" : "Section Glossaire",
+   "elements":["becher", "echantillon"],
+   "zones" : ["microscope", "bunsen"],
+   "steps":[  
+      {  
+      	"instruction" : "déplacez le bécher sur le bec bunsen",
+         "hint":"déplacez le bécher sur le bec bunsen",
+         "action": "becher on bunsen"
+      },
+      {  
+      	"instruction" : "déplacez le bécher sur le microscope",
+         "hint":"déplacez le bécher sur le microscope",
+         "action": "becher on microscope"
+      }
+   ]
+}

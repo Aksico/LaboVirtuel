@@ -1,0 +1,201 @@
+
+function canvasApp() {
+
+	if (!Modernizr.canvas) {
+		return;
+	}
+	
+	var theCanvas = document.getElementById("paillasse");
+	var context = theCanvas.getContext("2d");
+	
+	init();
+	var shapes;
+
+	var dragIndex;
+	var dragging;
+	var mouseX;
+	var mouseY;
+	var dragHoldX;
+	var dragHoldY;
+	
+	var steps;
+	var currentStep;
+	var scenario;
+	
+	
+	function init() {
+		shapes = [];
+		
+		makeShapes();
+		
+		currentStep=0;
+		scenario = new Scenario(scenario1);
+		
+		drawScreen();
+		
+		theCanvas.addEventListener("mousedown", mouseDownListener, false);
+		theCanvas.addEventListener("mousemove", mouseMoveListener, false);
+	}
+	
+	function mouseDownListener(evt) {
+		console.log("mouseDown");
+		var i;
+		//We are going to pay attention to the layering order of the objects so that if a mouse down occurs over more than object,
+		//only the topmost one will be dragged.
+		var highestIndex = -1;
+		
+		//getting mouse position correctly, being mindful of resizing that may have occured in the browser:
+		var bRect = theCanvas.getBoundingClientRect();
+		mouseX = (evt.clientX - bRect.left)*(theCanvas.width/bRect.width);
+		mouseY = (evt.clientY - bRect.top)*(theCanvas.height/bRect.height);
+				
+		//find which shape was clicked
+		for (i=0; i < shapes.length; i++) {
+			if	(shapes[i].isDragable() && hitTest(shapes[i], mouseX, mouseY)) {
+				dragging = true;
+				if (i > highestIndex) {
+					//We will pay attention to the point on the object where the mouse is "holding" the object:
+					dragHoldX = mouseX - shapes[i].x;
+					dragHoldY = mouseY - shapes[i].y;
+					highestIndex = i;
+					dragIndex = i;
+					shapes[i].changeState('mouseDown'); 
+				}
+			}
+		}
+		theCanvas.removeEventListener("mousedown", mouseDownListener, false);
+		window.addEventListener("mouseup", mouseUpListener, false);
+		
+		//code below prevents the mouse down from having an effect on the main browser window:
+		if (evt.preventDefault) {
+			evt.preventDefault();
+		} //standard
+		else if (evt.returnValue) {
+			evt.returnValue = false;
+		} //older IE
+		return false;
+	}
+	
+	function mouseUpListener(evt) {
+		
+		
+	
+		theCanvas.addEventListener("mousedown", mouseDownListener, false);
+		window.removeEventListener("mouseup", mouseUpListener, false);
+		if (dragging) {
+			var bRect = theCanvas.getBoundingClientRect();
+		mouseX = (evt.clientX - bRect.left)*(theCanvas.width/bRect.width);
+		mouseY = (evt.clientY - bRect.top)*(theCanvas.height/bRect.height);
+		for (i=0; i < shapes.length; i++) {
+			if	(dragIndex!== i && hitTest(shapes[i], mouseX, mouseY)) {
+					var message = shapes[dragIndex].id+" on "+shapes[i].id;
+					scenario.signal(message);
+					
+			}
+		}
+		
+			shapes[dragIndex].changeState('mouseUp'); 
+			placeElemOnAnother(dragIndex);
+			dragging = false;
+		}
+	}
+
+	function mouseMoveListener(evt) {
+		
+		//getting mouse position correctly 
+		var bRect = theCanvas.getBoundingClientRect();
+		mouseX = (evt.clientX - bRect.left)*(theCanvas.width/bRect.width);
+		mouseY = (evt.clientY - bRect.top)*(theCanvas.height/bRect.height);
+		
+		
+		if (dragging) {
+			var posX;
+			var posY;
+			var shapeX = shapes[dragIndex].width;
+			var shapeY = shapes[dragIndex].height;
+			var minX = 0;
+			var maxX = theCanvas.width - shapeX;
+			var minY = 0;
+			var maxY = theCanvas.height - shapeY;
+			
+			//clamp x and y positions to prevent object from dragging outside of canvas
+			posX = mouseX - dragHoldX;
+			posX = (posX < minX) ? minX : ((posX > maxX) ? maxX : posX);
+			posY = mouseY - dragHoldY;
+			posY = (posY < minY) ? minY : ((posY > maxY) ? maxY : posY);
+		
+			shapes[dragIndex].setPosition(posX,posY);
+		
+			for (i=0; i < shapes.length; i++) {
+				if	(i!==dragIndex && hitTest(shapes[i], mouseX, mouseY)) {
+					console.log("hovering "+shapes[i].id);
+				}
+			}
+			drawScreen();
+			
+		}else{
+			
+			for (i=0; i < shapes.length; i++) {
+				if	(hitTest(shapes[i], mouseX, mouseY)) {
+					console.log("hovering "+shapes[i].id);
+				}
+			}
+		}
+		
+		
+	}
+		
+	function hitTest(shape,mx,my) {		
+		return ( mx > shape.x && mx < shape.x + shape.width && my > shape.y && my < shape.y + shape.height);	
+	}
+
+	function placeElemOnAnother(lastElemIndex)
+	{
+		console.log("Deplacement");
+		for(i = 0; i < shapes.length; i++)
+		{
+			if(i != lastElemIndex && hitTest(shapes[i], shapes[lastElemIndex].x, shapes[lastElemIndex].y))
+			{
+				
+				shapes[lastElemIndex].y = shapes[i].y - shapes[lastElemIndex].height;
+				shapes[lastElemIndex].x = shapes[i].x;
+			}
+		}
+		drawScreen();
+	}
+
+
+
+	function makeShapes(){
+		var paillasseElements = scenario1.elements;
+		for(var i = 0, l = paillasseElements.length; i < l; ++i){
+			var paillasseElem = paillasseElements[i];
+			var tempShape = new PaillasseElem(paillasseElem,eval(paillasseElem+'Style'));  
+			shapes.push(tempShape);
+		}
+		
+		var paillasseZones = scenario1.zones;
+		for(var i = 0, l = paillasseZones.length; i < l; ++i){
+			var paillasseZone = paillasseZones[i];
+			var tempShape = new PaillasseZone(paillasseZone,eval(paillasseZone+'Style'));  
+			shapes.push(tempShape);
+		}
+	}
+
+	
+	function drawShapes() {
+		var i;
+		for (i=0,l = shapes.length;i<l; i++) {
+			(shapes[i]).drawElement();
+		}
+	}
+
+	function drawScreen() {
+		//bg
+		context.fillStyle = "#000000";
+		context.fillRect(0,0,theCanvas.width,theCanvas.height);
+		
+		drawShapes();		
+	}
+	
+}

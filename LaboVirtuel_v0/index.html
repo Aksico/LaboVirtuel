@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+
+<style type="text/css">
+	h4 {font-family: sans-serif;}
+	p {font-family: sans-serif;}
+	a {font-family: sans-serif; color:#d15423; text-decoration:none;}
+	
+#instructions{
+  height: 200px;
+  width: 500px;
+  border: 2px solid #00FF00;
+  background : #000000;
+  margin-right: 5px; 
+  float:right;
+}
+
+.toBeDone{
+	color : #333333;
+}
+
+.active{
+	color : #FF0000;
+}
+
+.done{
+	color : #00FF00;
+}
+</style>
+ 
+
+<title>HTML5 Canvas Example - Simple Dragging Objects</title>
+
+	<script src="./js/modernizr-2.0.6.js"></script>
+    <script src="./js/paillasseElem.js"></script>
+     <script src="./js/paillasseZone.js"></script>
+    <script src="./js/styles.js"></script>
+     <script src="./js/step.js"></script>
+    <!--<script src="./js/scenarii.js"></script>  -->
+    <script src="./js/scenario.js"></script>  
+    <script src="./js/debuger.js"></script>
+    <script src="./js/JsonToScenario.js"></script>  
+    <script src="./js/canvasApp.js"></script>  
+
+<script type="text/javascript">
+
+window.addEventListener("load", windowLoadHandler, false);
+
+
+function windowLoadHandler() {
+	new canvasApp();
+}
+
+
+</script>
+
+</head>
+<body>
+	
+<canvas id="paillasse" width="800" height="600">
+Your browser does not support HTML5 canvas.
+</canvas>
+<div id="instructions"></div>
+
+</body>
+</html>
