@@ -55,4 +55,11 @@ function loadFile(file) {
     return scenario1;
 }
 
-var scenario1 = loadFile('scenario1.json');
+function reloadCanva(file)
+{
+	var scenario1 = loadFile(file);
+}
+
+var scenario1 = loadFile('scenario1.json');	
+
+

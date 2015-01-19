@@ -8,7 +8,8 @@ function PaillasseElem(id,style) {
     this.id  = id;
     this.context = context;
     this.state = 'resting';
-     this.dragable = true;
+    this.dragable = true;
+    this.isResized = false;
 
 	var x = style.x,
 		y = style.y,

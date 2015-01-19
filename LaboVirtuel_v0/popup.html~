@@ -1,0 +1,18 @@
+<script type="text/javascript">
+	var lienFichier:
+	function envoyer()
+	{
+		var file = document.getElementById('JsonFile').value;
+		lienFichier = file;
+		init();
+		window.close();
+	}
+
+</script>
+
+<p> Veuillez choisir un fichier .JSON</p>
+<form>
+	<input id="JsonFile" type="file"/>
+	<input type="submit" onClick="envoyer()"/>
+</form>
+

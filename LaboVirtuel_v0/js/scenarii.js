@@ -4,9 +4,9 @@ var step2 = new Step('déplacez le bécher sur le microscope','déplacez le béc
 
 
 var scenario1 = {
-	aim : 'Section Objectif <h2>blabla</h2>',
+	aim : 'Section Objectif <h2></h2>',
 	glosary : 'Section Glossaire',
-	elements: ['becher','echantillon'],
+	elements: ['becher','echantillon','petri'],
 	zones: ['microscope','bunsen'],
 	steps: [step1,step2] //procedure
 	

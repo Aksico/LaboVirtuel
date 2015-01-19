@@ -1,0 +1,63 @@
+	h4 {font-family: sans-serif;}
+	p {font-family: sans-serif;}
+	a {font-family: sans-serif; color:#d15423; text-decoration:none;}
+	
+#instructions{
+  height: 200px;
+  width: 400px;
+  border: 2px solid #00FF00;
+  background : #000000;
+  margin-right: 5px; 
+  float:right;
+
+}
+
+#paillasse{
+margin-left:10px;
+
+
+	}
+
+#navigation{
+	height: 600px;
+	width: 8%;
+	border: 2px solid white;
+	float: left;
+	background: grey;
+	display: block;
+	
+	}
+
+.toBeDone{
+	color : #333333;
+}
+
+.active{
+	color : #FF0000;
+}
+
+.done{
+	color : #00FF00;
+}
+#partie{ 
+font-family: sans-serif ; 
+color:black; 
+text-decoration:none;
+
+}
+#partie:hover{
+text-decoration:underline ;
+font-weight:bold;
+
+
+}
+#image{
+	width:100%;
+	padding-top:5%;
+	
+}
+#drapeau{
+	width:15%;
+	margin-left:3px;
+	margin-right:3px;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">
+	var lienFichier;
+	function envoyer()
+	{
+		file = document.getElementById('JsonFile').value;
+		lienFichier = file;
+		alert(file);
+		
+		window.location.replace('index.html');
+	}
+
+</script>
+</head>
+
+
+<body>
+	<p> Veuillez choisir un fichier .JSON</p>
+	<form action="index.html" method ="post" accept-charset="utf-8">
+	<input id="JsonFile" type="file"/>
+	<input type="submit" onClick="envoyer()"/>
+</form>
+</body>
+
+
+</html>
+
+

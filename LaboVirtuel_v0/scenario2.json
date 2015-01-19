@@ -13,11 +13,6 @@
       	"instruction" : "déplacez le bécher sur le microscope",
          "hint":"déplacez le bécher sur le microscope",
          "action": "becher on microscope"
-      },
-      {  
-      	"instruction" : "déplacez le bécher sur le bunsen",
-         "hint":"déplacez le bécher sur le bunsen",
-         "action": "becher on bunsen"
       }
    ]
 }

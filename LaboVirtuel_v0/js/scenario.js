@@ -6,22 +6,24 @@ function Scenario(scenario){
 
 Scenario.prototype.signal =function(message){
 		var step = this.steps[this.currentStep];
-	console.log(message+' to be compared to '+step.action);
-		if(step.action == message){
-			//Ici, passer à l'étape suivante.
-			this.steps[this.currentStep].setDone();
-			this.currentStep++;
-			if(this.currentStep < scenario1.steps.length)
-			{
-				this.steps[this.currentStep].setActive();
-				console.log(this.steps[this.currentStep].hint); // Ecrire ca dans la zone de console....
-			}
-			else
-			{
-				alert('Bravo ! La manipulation est finie !');
-			}
-		}	
-	
+		if(step != null)
+		{
+			console.log(message+' to be compared to '+step.action);
+			if(step.action == message){
+				//Ici, passer à l'étape suivante.
+				this.steps[this.currentStep].setDone();
+				this.currentStep++;
+				if(this.currentStep < scenario1.steps.length)
+				{
+					this.steps[this.currentStep].setActive();
+					console.log(">>"+this.steps[this.currentStep].hint); // Ecrire ca dans la zone de console....
+				}
+				else
+				{
+					alert('Bravo ! La manipulation est finie !');
+				}
+			}	
+		}
 }
 	
 Scenario.prototype.loadScenario = function(scenario){
@@ -40,4 +42,13 @@ Scenario.prototype.loadScenario = function(scenario){
 		this.steps[this.currentStep].setActive();
 		console.log(this.steps[this.currentStep].hint); // Ecrire ca dans la zone de console....
 	}
-	
+
+function deleteScenario(scenario){
+	delete scenario;
+	delete scenario.steps;
+	var instructionsElement = document.getElementById("instructions");
+	while(instructionsElement.firstChild)
+	{
+		instructionsElement.removeChild(instructionsElement.firstChild);
+	}
+}

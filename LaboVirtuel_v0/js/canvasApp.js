@@ -1,5 +1,9 @@
+var hoverOffset = 15;
+var scenario1;
 
-function canvasApp() {
+function canvasApp(file) {
+
+	var JsonFile = file;
 
 	if (!Modernizr.canvas) {
 		return;
@@ -22,16 +26,38 @@ function canvasApp() {
 	var currentStep;
 	var scenario;
 	
-	
+	/*
 	function init() {
 		shapes = [];
 		
 		makeShapes();
 		
 		currentStep=0;
-		loadFile('scenario1.json');
+		//loadFile('scenario1.json');
 		scenario = new Scenario(scenario1);
 
+		
+		drawScreen();
+		
+		theCanvas.addEventListener("mousedown", mouseDownListener, false);
+		theCanvas.addEventListener("mousemove", mouseMoveListener, false);
+	}
+	*/
+	function init()
+	{
+		shapes = [];
+		
+		makeShapes();
+		currentStep=0;
+
+		if(JsonFile != null) // Cad chargement Fichier different de celui par defaut
+		{
+			//alert(JsonFile);
+			scenario = null;
+		}
+		scenario = new Scenario(scenario1);
+
+		
 		
 		drawScreen();
 		
@@ -80,7 +106,15 @@ function canvasApp() {
 	
 	function mouseUpListener(evt) {
 		
-		
+		for(i = 0; i<shapes.length; i++)
+		{
+			if(shapes[i].isResized == true)
+			{
+				shapes[i].height -= hoverOffset;
+				shapes[i].width -= hoverOffset;
+				shapes[i].isResized = false;
+			}
+		}	
 	
 		theCanvas.addEventListener("mousedown", mouseDownListener, false);
 		window.removeEventListener("mouseup", mouseUpListener, false);
@@ -109,6 +143,19 @@ function canvasApp() {
 		mouseX = (evt.clientX - bRect.left)*(theCanvas.width/bRect.width);
 		mouseY = (evt.clientY - bRect.top)*(theCanvas.height/bRect.height);
 		
+		for(i = 0; i<shapes.length; i++)
+		{
+			if(!hitTest(shapes[i], mouseX, mouseY))
+			{
+				if(shapes[i].isResized == true)
+				{
+					shapes[i].height -= hoverOffset;
+					shapes[i].width -= hoverOffset;
+					shapes[i].isResized = false;
+				}
+			}
+			drawScreen();
+		}
 		
 		if (dragging) {
 			var posX;
@@ -131,6 +178,7 @@ function canvasApp() {
 			for (i=0; i < shapes.length; i++) {
 				if	(i!==dragIndex && hitTest(shapes[i], mouseX, mouseY)) {
 					console.log("hovering "+shapes[i].id);
+					
 				}
 			}
 			drawScreen();
@@ -140,6 +188,13 @@ function canvasApp() {
 			for (i=0; i < shapes.length; i++) {
 				if	(hitTest(shapes[i], mouseX, mouseY)) {
 					console.log("hovering "+shapes[i].id);
+					if(shapes[i].isResized == false)
+					{
+						shapes[i].height += hoverOffset;
+						shapes[i].width += hoverOffset;
+						shapes[i].isResized = true;
+					}
+					drawScreen();
 				}
 			}
 		}
@@ -179,8 +234,8 @@ function canvasApp() {
 		//bg
 		context.fillStyle = "#000000";
 		context.fillRect(0,0,theCanvas.width,theCanvas.height);
-		
-		drawShapes();		
+		drawShapes();
 	}
+	
 	
 }
